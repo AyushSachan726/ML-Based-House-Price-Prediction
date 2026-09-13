@@ -1,17 +1,8 @@
 [theme]
-# Primary accent color for interactive elements, buttons, and highlights
-primaryColor = "#2563EB"
-
-# Background color for the main content area
-backgroundColor = "#0F172A"
-
-# Background color for sidebar and modal elements
-secondaryBackgroundColor = "#1E293B"
-
-# Color for text
-textColor = "#F8FAFC"
-
-# Font family ('sans serif', 'serif', or 'monospace')
+primaryColor = "#F59E0B"
+backgroundColor = "#F1F4F8"
+secondaryBackgroundColor = "#FFFFFF"
+textColor = "#0F172A"
 font = "sans serif"
 
 [server]
