@@ -1,7 +1,7 @@
 """
 Real Estate Machine Learning Valuation Dashboard.
 Architecture inspired by modern architectural dashboard standards.
-No emojis. Clean design system with high-contrast typography and modular card layout.
+Flat, matte, human-crafted design with zero glow, zero gradients, and zero emojis.
 """
 
 import streamlit as st
@@ -80,156 +80,179 @@ def get_sample_template():
 
 
 def inject_custom_styles():
-    """Inject custom CSS rules matching modern architectural dashboard layout."""
+    """Inject flat, matte, architectural styles with zero glow and zero neon."""
     st.markdown("""
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
 
     html, body, [class*="css"] {
-        font-family: 'Plus Jakarta Sans', sans-serif;
+        font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+        background-color: #EDEFF2;
     }
 
-    /* Top Hero Banner in Warm Amber Ochre Tone */
+    /* Main container clean padding */
+    .block-container {
+        padding-top: 2rem !important;
+        padding-bottom: 3rem !important;
+        max-width: 1280px !important;
+    }
+
+    /* Solid Flat Architectural Yellow Header Card - No Gradient, No Glow */
     .hero-banner {
-        background: linear-gradient(135deg, #F59E0B 0%, #FBBF24 50%, #FCD34D 100%);
-        border-radius: 20px;
-        padding: 36px 40px;
-        color: #1E293B;
-        box-shadow: 0 10px 30px -10px rgba(245, 158, 11, 0.35);
-        margin-bottom: 28px;
-        position: relative;
-        overflow: hidden;
+        background-color: #F6C844;
+        border-radius: 14px;
+        padding: 30px 34px;
+        color: #111827;
+        margin-bottom: 22px;
+        border: 1px solid #E6B830;
     }
     .hero-title {
-        font-size: 2.2rem;
-        font-weight: 800;
-        letter-spacing: -0.03em;
+        font-size: 2rem;
+        font-weight: 700;
+        letter-spacing: -0.02em;
         margin: 0 0 6px 0;
-        color: #0F172A;
+        color: #111827;
     }
     .hero-subtitle {
-        font-size: 0.95rem;
+        font-size: 0.92rem;
         font-weight: 500;
-        color: #334155;
-        margin-bottom: 20px;
-        max-width: 650px;
+        color: #374151;
+        margin-bottom: 18px;
+        max-width: 640px;
         line-height: 1.5;
     }
     .hero-stats-row {
         display: flex;
-        gap: 24px;
+        gap: 12px;
         flex-wrap: wrap;
     }
     .hero-pill {
-        background: rgba(255, 255, 255, 0.85);
-        backdrop-filter: blur(8px);
-        padding: 8px 16px;
-        border-radius: 999px;
-        font-size: 0.85rem;
-        font-weight: 700;
-        color: #0F172A;
-        border: 1px solid rgba(255, 255, 255, 0.4);
+        background: #FFFFFF;
+        padding: 6px 14px;
+        border-radius: 6px;
+        font-size: 0.82rem;
+        font-weight: 600;
+        color: #111827;
+        border: 1px solid #E5E7EB;
     }
 
-    /* Metric Cards */
+    /* Flat Matte White Metric Cards - No Shadow, No Glow */
     .stat-card {
         background: #FFFFFF;
-        border: 1px solid #E2E8F0;
-        border-radius: 16px;
-        padding: 22px 24px;
-        box-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.04);
-        margin-bottom: 16px;
-        transition: all 0.2s ease;
-    }
-    .stat-card:hover {
-        border-color: #CBD5E1;
-        box-shadow: 0 10px 25px -4px rgba(15, 23, 42, 0.08);
+        border: 1px solid #E5E7EB;
+        border-radius: 12px;
+        padding: 18px 20px;
+        margin-bottom: 14px;
     }
     .stat-label {
-        font-size: 0.78rem;
+        font-size: 0.72rem;
         font-weight: 700;
         text-transform: uppercase;
-        letter-spacing: 0.08em;
-        color: #64748B;
-        margin-bottom: 8px;
+        letter-spacing: 0.06em;
+        color: #6B7280;
+        margin-bottom: 6px;
     }
     .stat-value {
-        font-size: 1.85rem;
-        font-weight: 800;
-        color: #0F172A;
-        line-height: 1.1;
-        margin-bottom: 6px;
+        font-size: 1.65rem;
+        font-weight: 700;
+        color: #111827;
+        line-height: 1.15;
+        margin-bottom: 8px;
+        letter-spacing: -0.02em;
     }
     .stat-badge-positive {
         display: inline-block;
-        padding: 3px 10px;
-        border-radius: 999px;
-        font-size: 0.75rem;
-        font-weight: 700;
-        background: #DCFCE7;
-        color: #15803D;
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-size: 0.72rem;
+        font-weight: 600;
+        background: #F3F4F6;
+        color: #1F2937;
+        border: 1px solid #E5E7EB;
     }
     .stat-badge-neutral {
         display: inline-block;
-        padding: 3px 10px;
-        border-radius: 999px;
-        font-size: 0.75rem;
-        font-weight: 700;
-        background: #FEF3C7;
-        color: #B45309;
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-size: 0.72rem;
+        font-weight: 600;
+        background: #F3F4F6;
+        color: #4B5563;
+        border: 1px solid #E5E7EB;
     }
 
-    /* Section Headers */
+    /* Clean Matte Section Headers */
     .section-header {
-        font-size: 1.25rem;
+        font-size: 1.1rem;
         font-weight: 700;
-        color: #0F172A;
-        letter-spacing: -0.02em;
-        margin: 24px 0 8px 0;
+        color: #111827;
+        letter-spacing: -0.01em;
+        margin: 20px 0 6px 0;
     }
     .section-desc {
-        font-size: 0.9rem;
-        color: #64748B;
-        margin-bottom: 20px;
+        font-size: 0.85rem;
+        color: #6B7280;
+        margin-bottom: 16px;
     }
 
-    /* Styled Tab Navigation */
+    /* Flat Tab Navigation */
     div[data-baseweb="tab-list"] {
-        gap: 8px;
-        border-bottom: 1px solid #E2E8F0;
-        padding-bottom: 6px;
-        margin-bottom: 24px;
+        gap: 6px;
+        border-bottom: 1px solid #E5E7EB;
+        padding-bottom: 4px;
+        margin-bottom: 20px;
     }
     div[data-baseweb="tab"] {
-        padding: 10px 20px !important;
+        padding: 8px 16px !important;
         font-weight: 600 !important;
-        font-size: 0.9rem !important;
-        border-radius: 10px !important;
-        color: #64748B !important;
+        font-size: 0.85rem !important;
+        border-radius: 6px !important;
+        color: #6B7280 !important;
         background: transparent !important;
         border: none !important;
     }
     div[data-baseweb="tab"][aria-selected="true"] {
-        color: #0F172A !important;
+        color: #111827 !important;
         background: #FFFFFF !important;
-        box-shadow: 0 2px 10px rgba(15, 23, 42, 0.06) !important;
+        border: 1px solid #E5E7EB !important;
     }
 
-    /* Primary Action Buttons */
+    /* Matte Solid Buttons - No Glow */
     div.stButton > button[kind="primary"] {
-        background-color: #0F172A !important;
+        background-color: #111827 !important;
         color: #FFFFFF !important;
-        border-radius: 12px !important;
-        padding: 12px 28px !important;
-        font-weight: 700 !important;
-        font-size: 0.95rem !important;
-        border: none !important;
-        box-shadow: 0 4px 14px rgba(15, 23, 42, 0.15) !important;
-        transition: all 0.2s ease !important;
+        border-radius: 8px !important;
+        padding: 10px 22px !important;
+        font-weight: 600 !important;
+        font-size: 0.9rem !important;
+        border: 1px solid #111827 !important;
+        box-shadow: none !important;
     }
     div.stButton > button[kind="primary"]:hover {
-        background-color: #1E293B !important;
-        transform: translateY(-1px) !important;
+        background-color: #1F2937 !important;
+    }
+
+    /* Clean Secondary Buttons */
+    div.stButton > button[kind="secondary"], div.stDownloadButton > button {
+        background-color: #FFFFFF !important;
+        color: #111827 !important;
+        border-radius: 8px !important;
+        padding: 8px 18px !important;
+        font-weight: 600 !important;
+        font-size: 0.85rem !important;
+        border: 1px solid #D1D5DB !important;
+        box-shadow: none !important;
+    }
+    div.stButton > button[kind="secondary"]:hover, div.stDownloadButton > button:hover {
+        background-color: #F9FAFB !important;
+        border-color: #9CA3AF !important;
+    }
+
+    /* Clean Tables & Dataframes */
+    [data-testid="stDataFrame"] {
+        border: 1px solid #E5E7EB;
+        border-radius: 8px;
+        background: #FFFFFF;
     }
     </style>
     """, unsafe_allow_html=True)
@@ -254,41 +277,41 @@ def main():
     label_encoders = preprocessor_data["label_encoders"]
 
     # Sidebar Navigation & System Meta
-    st.sidebar.markdown("### System Architecture")
-    st.sidebar.caption("Machine Learning Real Estate Appraisal Engine")
+    st.sidebar.markdown("### System Configuration")
+    st.sidebar.caption("Machine Learning Real Estate Valuation")
     st.sidebar.markdown("---")
 
-    st.sidebar.markdown("**Production Model**")
+    st.sidebar.markdown("**Active Model**")
     st.sidebar.write(f"Algorithm: **{model_name}**")
-    st.sidebar.write(f"Confidence R²: **{model_data['metrics']['R2_Score'] * 100:.2f}%**")
-    st.sidebar.write(f"Root Mean Squared Error: **${model_data['metrics']['RMSE']:,.0f}**")
-    st.sidebar.write(f"Mean Absolute Error: **${model_data['metrics']['MAE']:,.0f}**")
+    st.sidebar.write(f"R² Score: **{model_data['metrics']['R2_Score'] * 100:.2f}%**")
+    st.sidebar.write(f"RMSE: **${model_data['metrics']['RMSE']:,.0f}**")
+    st.sidebar.write(f"MAE: **${model_data['metrics']['MAE']:,.0f}**")
 
     st.sidebar.markdown("---")
-    st.sidebar.markdown("**Training Benchmark**")
+    st.sidebar.markdown("**Dataset Parameters**")
     st.sidebar.write("Observations: 5,000 Verified Records")
-    st.sidebar.write("Input Dimensions: 14 Property Features")
-    st.sidebar.write("Cross-Validation: 80% Train, 20% Test")
-    st.sidebar.write("Pipeline Version: 2.4.0 Production")
+    st.sidebar.write("Input Features: 14 Property Attributes")
+    st.sidebar.write("Evaluation Split: 80% Train, 20% Test")
+    st.sidebar.write("Status: Verified Production")
 
-    # Main Hero Banner (Architectural Dashboard Reference)
+    # Main Hero Banner (Matte Flat Architectural Yellow)
     st.markdown(f"""
     <div class="hero-banner">
         <div class="hero-title">Real Estate Valuation Engine</div>
         <div class="hero-subtitle">
-            Automated property appraisal platform powered by gradient tree boosting.
-            Evaluates structural geometry, regional tiering, and amenities across residential markets.
+            Residential property appraisal model calibrated across 5,000 market transactions.
+            Computes valuations based on dimensions, regional location tiers, and structural features.
         </div>
         <div class="hero-stats-row">
             <div class="hero-pill">Model: {model_name}</div>
-            <div class="hero-pill">Benchmark R²: {model_data['metrics']['R2_Score'] * 100:.2f}%</div>
-            <div class="hero-pill">Sample Population: 5,000 Units</div>
-            <div class="hero-pill">Inference Latency: 0.22s</div>
+            <div class="hero-pill">Accuracy: {model_data['metrics']['R2_Score'] * 100:.2f}% R²</div>
+            <div class="hero-pill">Training Base: 5,000 Units</div>
+            <div class="hero-pill">Latency: 0.22s</div>
         </div>
     </div>
     """, unsafe_allow_html=True)
 
-    # Clean Architectural Tabs (Zero Emojis)
+    # Clean Architectural Tabs
     tab_single, tab_batch, tab_factors, tab_market, tab_benchmark = st.tabs([
         "Property Valuation",
         "Batch Processing",
@@ -369,9 +392,9 @@ def main():
             with m1:
                 st.markdown(f"""
                 <div class="stat-card">
-                    <div class="stat-label">Estimated Fair Market Value</div>
+                    <div class="stat-label">Estimated Market Value</div>
                     <div class="stat-value">${prediction:,.0f}</div>
-                    <span class="stat-badge-positive">Verified Valuation</span>
+                    <span class="stat-badge-positive">Verified Estimate</span>
                 </div>
                 """, unsafe_allow_html=True)
             with m2:
@@ -379,59 +402,58 @@ def main():
                 <div class="stat-card">
                     <div class="stat-label">Unit Capital Rate</div>
                     <div class="stat-value">${price_per_sqft:,.1f}</div>
-                    <span class="stat-badge-neutral">Per Square Foot</span>
+                    <span class="stat-badge-neutral">Per Sq Ft</span>
                 </div>
                 """, unsafe_allow_html=True)
             with m3:
                 st.markdown(f"""
                 <div class="stat-card">
-                    <div class="stat-label">Model Deviation Band (RMSE)</div>
+                    <div class="stat-label">Model Deviation (RMSE)</div>
                     <div class="stat-value">± ${rmse:,.0f}</div>
-                    <span class="stat-badge-neutral">Statistical Variance</span>
+                    <span class="stat-badge-neutral">Standard Variance</span>
                 </div>
                 """, unsafe_allow_html=True)
             with m4:
                 st.markdown(f"""
                 <div class="stat-card">
-                    <div class="stat-label">Confidence Range</div>
+                    <div class="stat-label">Expected Range</div>
                     <div class="stat-value">${max(0, prediction - rmse):,.0f} - ${prediction + rmse:,.0f}</div>
-                    <span class="stat-badge-positive">95% Range</span>
+                    <span class="stat-badge-positive">Confidence Interval</span>
                 </div>
                 """, unsafe_allow_html=True)
 
-            # Specification Breakdown
-            st.markdown('<div class="section-header">Evaluation Matrix</div>', unsafe_allow_html=True)
+            st.markdown('<div class="section-header">Specification Analysis</div>', unsafe_allow_html=True)
             b1, b2, b3 = st.columns(3)
             with b1:
                 st.markdown(f"""
                 <div class="stat-card">
-                    <div class="stat-label">Spatial Footprint</div>
-                    <p style="margin: 0; color: #334155; line-height: 1.6;">
+                    <div class="stat-label">Spatial Geometry</div>
+                    <p style="margin: 0; color: #374151; font-size: 0.88rem; line-height: 1.6;">
                         Floor Space: <strong>{area:,} sqft</strong><br>
-                        Floor Distribution: <strong>{stories} Level(s)</strong><br>
-                        Accommodations: <strong>{bedrooms} Bed / {bathrooms} Bath</strong>
+                        Structure Height: <strong>{stories} Level(s)</strong><br>
+                        Rooms: <strong>{bedrooms} Bed / {bathrooms} Bath</strong>
                     </p>
                 </div>
                 """, unsafe_allow_html=True)
             with b2:
                 st.markdown(f"""
                 <div class="stat-card">
-                    <div class="stat-label">Location Context</div>
-                    <p style="margin: 0; color: #334155; line-height: 1.6;">
-                        District Classification: <strong>{location}</strong><br>
-                        Prime Zone Status: <strong>{preferred_area}</strong><br>
-                        Asset Vintage: <strong>{age} Year(s) Elapsed</strong>
+                    <div class="stat-label">Location Parameters</div>
+                    <p style="margin: 0; color: #374151; font-size: 0.88rem; line-height: 1.6;">
+                        District: <strong>{location}</strong><br>
+                        Prime Zone: <strong>{preferred_area}</strong><br>
+                        Building Age: <strong>{age} Year(s)</strong>
                     </p>
                 </div>
                 """, unsafe_allow_html=True)
             with b3:
                 st.markdown(f"""
                 <div class="stat-card">
-                    <div class="stat-label">Amenities Specification</div>
-                    <p style="margin: 0; color: #334155; line-height: 1.6;">
-                        Furnishing Finish: <strong>{furnishing}</strong><br>
+                    <div class="stat-label">Structural Features</div>
+                    <p style="margin: 0; color: #374151; font-size: 0.88rem; line-height: 1.6;">
+                        Furnishing: <strong>{furnishing}</strong><br>
                         Climate Control: <strong>{ac}</strong><br>
-                        Subterranean Base: <strong>{basement}</strong>
+                        Basement Structure: <strong>{basement}</strong>
                     </p>
                 </div>
                 """, unsafe_allow_html=True)
@@ -452,7 +474,7 @@ def main():
             mime="text/csv"
         )
 
-        st.markdown("<div style='height: 16px;'></div>", unsafe_allow_html=True)
+        st.markdown("<div style='height: 14px;'></div>", unsafe_allow_html=True)
 
         uploaded_file = st.file_uploader(
             "Upload Portfolio File (CSV or Excel Format)",
@@ -473,7 +495,7 @@ def main():
                     st.dataframe(input_df.head(10), use_container_width=True)
 
                 if st.button("Execute Portfolio Scoring", type="primary", use_container_width=True):
-                    with st.spinner("Computing valuations via gradient boosted ensemble..."):
+                    with st.spinner("Computing valuations via model ensemble..."):
                         scored_df = predict_batch(input_df, model, scaler, label_encoders)
 
                     avg_val = scored_df["Predicted_Price_USD"].mean()
@@ -496,23 +518,23 @@ def main():
                         <div class="stat-card">
                             <div class="stat-label">Mean Valuation</div>
                             <div class="stat-value">${avg_val:,.0f}</div>
-                            <span class="stat-badge-neutral">Portfolio Average</span>
+                            <span class="stat-badge-neutral">Average Value</span>
                         </div>
                         """, unsafe_allow_html=True)
                     with k3:
                         st.markdown(f"""
                         <div class="stat-card">
-                            <div class="stat-label">Floor Asset Value</div>
+                            <div class="stat-label">Floor Valuation</div>
                             <div class="stat-value">${min_val:,.0f}</div>
-                            <span class="stat-badge-neutral">Minimum Range</span>
+                            <span class="stat-badge-neutral">Minimum</span>
                         </div>
                         """, unsafe_allow_html=True)
                     with k4:
                         st.markdown(f"""
                         <div class="stat-card">
-                            <div class="stat-label">Ceiling Asset Value</div>
+                            <div class="stat-label">Ceiling Valuation</div>
                             <div class="stat-value">${max_val:,.0f}</div>
-                            <span class="stat-badge-positive">Maximum Range</span>
+                            <span class="stat-badge-positive">Maximum</span>
                         </div>
                         """, unsafe_allow_html=True)
 
@@ -529,14 +551,14 @@ def main():
                     )
 
             except Exception as e:
-                st.error(f"Ingestion Exception: {str(e)}")
+                st.error(f"Ingestion Error: {str(e)}")
 
     # ==========================================
     # TAB 3: FACTOR ATTRIBUTION
     # ==========================================
     with tab_factors:
         st.markdown('<div class="section-header">Feature Attribution & Drivers</div>', unsafe_allow_html=True)
-        st.markdown('<div class="section-desc">Empirical contribution analysis illustrating the structural weight of each property attribute.</div>', unsafe_allow_html=True)
+        st.markdown('<div class="section-desc">Relative contribution weights identifying dominant market pricing factors.</div>', unsafe_allow_html=True)
 
         f_col1, f_col2 = st.columns([1, 1])
         with f_col1:
@@ -546,8 +568,8 @@ def main():
         with f_col2:
             st.markdown(f"""
             <div class="stat-card">
-                <div class="stat-label">Dominant Valuation Drivers</div>
-                <ul style="margin: 8px 0 0 0; padding-left: 20px; color: #334155; line-height: 1.8;">
+                <div class="stat-label">Primary Valuation Drivers</div>
+                <ul style="margin: 8px 0 0 0; padding-left: 18px; color: #374151; font-size: 0.88rem; line-height: 1.8;">
                     <li><strong>Total Usable Area (~45% Impact):</strong> Dominates baseline pricing curve across all market tiers.</li>
                     <li><strong>Locational Tiering (~25% Impact):</strong> Premium zones (Lakeview, Downtown) apply 1.4x to 1.6x pricing multipliers.</li>
                     <li><strong>Prime Zone Status (~10% Impact):</strong> Exclusive residential designation conveys immediate valuation uplift.</li>
@@ -557,7 +579,7 @@ def main():
             </div>
             """, unsafe_allow_html=True)
 
-        st.markdown("<div style='height: 20px;'></div>", unsafe_allow_html=True)
+        st.markdown("<div style='height: 18px;'></div>", unsafe_allow_html=True)
         st.markdown('<div class="section-header">Covariance & Feature Interdependence</div>', unsafe_allow_html=True)
         if os.path.exists("outputs/correlation_heatmap.png"):
             st.image("outputs/correlation_heatmap.png", caption="Feature Pearson Correlation Matrix", use_container_width=True)
@@ -567,7 +589,7 @@ def main():
     # ==========================================
     with tab_market:
         st.markdown('<div class="section-header">Market Intelligence Explorer</div>', unsafe_allow_html=True)
-        st.markdown('<div class="section-desc">Direct exploration of the 5,000 unit training dataset and price distribution patterns.</div>', unsafe_allow_html=True)
+        st.markdown('<div class="section-desc">Exploration of the 5,000 unit training dataset and price distribution patterns.</div>', unsafe_allow_html=True)
 
         if os.path.exists("data/housing_data.csv"):
             df = pd.read_csv("data/housing_data.csv")
@@ -578,7 +600,7 @@ def main():
                 <div class="stat-card">
                     <div class="stat-label">Total Verified Units</div>
                     <div class="stat-value">{len(df):,}</div>
-                    <span class="stat-badge-positive">Active Population</span>
+                    <span class="stat-badge-positive">Dataset Records</span>
                 </div>
                 """, unsafe_allow_html=True)
             with d2:
@@ -594,7 +616,7 @@ def main():
                 <div class="stat-card">
                     <div class="stat-label">Median Valuation</div>
                     <div class="stat-value">${df['Price'].median():,.0f}</div>
-                    <span class="stat-badge-neutral">Central Tendency</span>
+                    <span class="stat-badge-neutral">Central Median</span>
                 </div>
                 """, unsafe_allow_html=True)
             with d4:
@@ -606,7 +628,7 @@ def main():
                 </div>
                 """, unsafe_allow_html=True)
 
-            st.markdown("<div style='height: 12px;'></div>", unsafe_allow_html=True)
+            st.markdown("<div style='height: 10px;'></div>", unsafe_allow_html=True)
             fl1, fl2, fl3 = st.columns(3)
             with fl1:
                 loc_filter = st.multiselect("Filter District", options=sorted(df["Location"].unique()), default=None)
@@ -625,7 +647,7 @@ def main():
             st.caption(f"Displaying {len(filt_df):,} matching properties:")
             st.dataframe(filt_df.head(100), use_container_width=True)
 
-            st.markdown("<div style='height: 16px;'></div>", unsafe_allow_html=True)
+            st.markdown("<div style='height: 14px;'></div>", unsafe_allow_html=True)
             st.markdown('<div class="section-header">Pricing Dispersion & Outlier Variance</div>', unsafe_allow_html=True)
             if os.path.exists("outputs/price_distribution.png"):
                 st.image("outputs/price_distribution.png", caption="Price Distribution Histogram & Interquartile Range", use_container_width=True)
@@ -636,7 +658,7 @@ def main():
     # TAB 5: MODEL LEADERBOARD
     # ==========================================
     with tab_benchmark:
-        st.markdown('<div class="section-header">Machine Learning Model Leaderboard</div>', unsafe_allow_html=True)
+        st.markdown('<div class="section-header">Model Performance Benchmark</div>', unsafe_allow_html=True)
         st.markdown('<div class="section-desc">Standardized comparative evaluation across 6 regression algorithms under identical train/test splits.</div>', unsafe_allow_html=True)
 
         benchmark_data = [
@@ -649,7 +671,7 @@ def main():
         ]
         st.table(pd.DataFrame(benchmark_data))
 
-        st.markdown("<div style='height: 16px;'></div>", unsafe_allow_html=True)
+        st.markdown("<div style='height: 14px;'></div>", unsafe_allow_html=True)
         b_c1, b_c2 = st.columns(2)
         with b_c1:
             if os.path.exists("outputs/model_comparison.png"):
