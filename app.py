@@ -1,7 +1,11 @@
 """
-Streamlit Web Application for House Price Prediction.
-Features: Interactive Predictor, Factor Breakdown, Dataset Explorer, Visualizations & Model Benchmark.
-Run: streamlit run app.py
+Streamlit Web Application for House Price Prediction & Analytics.
+Features:
+- Single House Price Predictor with Factor Breakdown
+- CSV/Excel Batch Upload & Instant Scoring (with downloadable sample & results)
+- Key Factors & Feature Importance Insights
+- Dataset Explorer with Custom CSV Upload & Re-training
+- ML Algorithm Leaderboard & Evaluation
 """
 
 import streamlit as st
@@ -9,6 +13,7 @@ import pandas as pd
 import numpy as np
 import joblib
 import os
+import io
 
 
 def load_model_and_preprocessor():
@@ -16,6 +21,72 @@ def load_model_and_preprocessor():
     model_data = joblib.load("models/best_model.pkl")
     preprocessor_data = joblib.load("models/preprocessor.pkl")
     return model_data, preprocessor_data
+
+
+def predict_batch(df, model, scaler, label_encoders):
+    """Predict prices for an entire dataframe."""
+    scored_df = df.copy()
+    processed_df = df.copy()
+
+    # Ensure required columns exist
+    required_cols = [
+        "Area_sqft", "Bedrooms", "Bathrooms", "Stories", "Parking", "Age_years",
+        "Location", "Furnishing", "Road_access", "Guestroom", "Basement",
+        "Hot_water", "AC", "Preferred_area"
+    ]
+
+    missing = [c for c in required_cols if c not in processed_df.columns]
+    if missing:
+        raise ValueError(f"Uploaded file is missing required columns: {missing}")
+
+    # Fill any missing values in inputs
+    for col in required_cols:
+        if col in ["Location", "Furnishing", "Road_access", "Guestroom", "Basement", "Hot_water", "AC", "Preferred_area"]:
+            processed_df[col] = processed_df[col].fillna(processed_df[col].mode()[0] if len(processed_df[col].mode()) > 0 else "Unknown")
+        else:
+            processed_df[col] = processed_df[col].fillna(processed_df[col].median())
+
+    # Encode categorical features
+    for col, le in label_encoders.items():
+        if col in processed_df.columns:
+            # Handle unseen labels by mapping them to known classes
+            known_classes = set(le.classes_)
+            processed_df[col] = processed_df[col].astype(str)
+            mode_class = le.classes_[0]
+            processed_df[col] = processed_df[col].apply(lambda x: x if x in known_classes else mode_class)
+            processed_df[col] = le.transform(processed_df[col])
+
+    # Scale and predict
+    features_only = processed_df[required_cols]
+    scaled_data = scaler.transform(features_only)
+    predictions = model.predict(scaled_data)
+
+    scored_df["Predicted_Price ($)"] = np.round(predictions, 2)
+    if "Area_sqft" in scored_df.columns:
+        scored_df["Price_per_sqft ($)"] = np.round(scored_df["Predicted_Price ($)"] / scored_df["Area_sqft"], 2)
+
+    return scored_df
+
+
+def get_sample_template():
+    """Return a clean sample dataframe for users to download and test."""
+    sample = pd.DataFrame({
+        "Area_sqft": [1500, 2400, 3200, 1100, 4100],
+        "Bedrooms": [3, 4, 5, 2, 5],
+        "Bathrooms": [2, 3, 3, 1, 4],
+        "Stories": [1, 2, 2, 1, 3],
+        "Parking": [1, 2, 2, 0, 3],
+        "Age_years": [5, 12, 2, 25, 1],
+        "Location": ["Downtown", "Suburban", "Lakeview", "Rural", "Uptown"],
+        "Furnishing": ["Furnished", "Semi-Furnished", "Furnished", "Unfurnished", "Furnished"],
+        "Road_access": ["Yes", "Yes", "Yes", "No", "Yes"],
+        "Guestroom": ["No", "Yes", "Yes", "No", "Yes"],
+        "Basement": ["No", "Yes", "Yes", "No", "Yes"],
+        "Hot_water": ["Yes", "Yes", "Yes", "No", "Yes"],
+        "AC": ["Yes", "Yes", "Yes", "No", "Yes"],
+        "Preferred_area": ["Yes", "No", "Yes", "No", "Yes"],
+    })
+    return sample
 
 
 def main():
@@ -27,7 +98,7 @@ def main():
 
     # Custom Header
     st.title("🏠 ML-Based House Price Prediction & Analytics")
-    st.caption("A data-driven machine learning system trained on 5,000 property records with 14 structural, locational & amenity factors.")
+    st.caption("A data-driven machine learning system with single & batch upload prediction, data analytics, and model benchmarking.")
     st.markdown("---")
 
     # Check if model exists
@@ -58,18 +129,98 @@ def main():
     st.sidebar.write("• **Algorithm Type:** Gradient Tree Boosting")
 
     # Tabs Interface
-    tab1, tab2, tab3, tab4 = st.tabs([
-        "🔮 Instant Price Predictor",
+    tab_upload, tab_single, tab_factors, tab_data, tab_models = st.tabs([
+        "📂 Upload Dataset & Batch Predict",
+        "🔮 Single House Predictor",
         "📊 Key Factors & Feature Importance",
-        "📋 Dataset Explorer & Distribution",
-        "🏆 Model Leaderboard & Evaluation"
+        "📋 Dataset Explorer",
+        "🏆 Model Leaderboard"
     ])
 
     # ==========================================
-    # TAB 1: PREDICTOR
+    # TAB 1: UPLOAD & BATCH PREDICT
     # ==========================================
-    with tab1:
-        st.subheader("📝 Enter Property Specifications")
+    with tab_upload:
+        st.subheader("📂 Upload Housing Dataset (CSV / Excel)")
+        st.write("Upload a file containing multiple houses to predict prices for all of them at once, or download our ready-to-use sample template.")
+
+        # Download Sample Template Section
+        st.markdown("#### 📥 Don't have a dataset ready? Download Sample Template:")
+        sample_df = get_sample_template()
+        csv_buffer = sample_df.to_csv(index=False).encode("utf-8")
+        st.download_button(
+            label="⬇️ Download Sample Housing CSV (5 Houses)",
+            data=csv_buffer,
+            file_name="sample_housing_data.csv",
+            mime="text/csv",
+            help="Download this sample CSV, make changes or directly upload it below to test!"
+        )
+
+        st.markdown("---")
+        st.markdown("#### 📤 Upload Your File:")
+        uploaded_file = st.file_uploader(
+            "Choose a CSV or Excel file",
+            type=["csv", "xlsx", "xls"],
+            help="File must contain the 14 property features (Area_sqft, Bedrooms, Location, etc.)"
+        )
+
+        if uploaded_file is not None:
+            try:
+                # Read file
+                if uploaded_file.name.endswith(".csv"):
+                    input_df = pd.read_csv(uploaded_file)
+                else:
+                    input_df = pd.read_excel(uploaded_file)
+
+                st.success(f"✅ Successfully loaded **{uploaded_file.name}** ({len(input_df):,} rows, {len(input_df.columns)} columns)")
+
+                # Show preview of uploaded data
+                with st.expander("👀 Preview Uploaded Data (First 10 rows)", expanded=True):
+                    st.dataframe(input_df.head(10), use_container_width=True)
+
+                # Batch Predict Button
+                if st.button("🚀 Predict Prices for All Properties", type="primary", use_container_width=True):
+                    with st.spinner("Calculating valuations with XGBoost model..."):
+                        scored_df = predict_batch(input_df, model, scaler, label_encoders)
+
+                    st.balloons()
+                    st.markdown("### 💰 Prediction Results Summary")
+
+                    # KPIs of predictions
+                    avg_pred = scored_df["Predicted_Price ($)"].mean()
+                    min_pred = scored_df["Predicted_Price ($)"].min()
+                    max_pred = scored_df["Predicted_Price ($)"].max()
+                    tot_props = len(scored_df)
+
+                    k1, k2, k3, k4 = st.columns(4)
+                    k1.metric("Properties Scored", f"{tot_props:,}")
+                    k2.metric("Average Valuation", f"${avg_pred:,.2f}")
+                    k3.metric("Min Valuation", f"${min_pred:,.2f}")
+                    k4.metric("Max Valuation", f"${max_pred:,.2f}")
+
+                    st.markdown("---")
+                    st.markdown("#### 📊 Valuation Results Table:")
+                    st.dataframe(scored_df, use_container_width=True)
+
+                    # Download results button
+                    result_csv = scored_df.to_csv(index=False).encode("utf-8")
+                    st.download_button(
+                        label="⬇️ Download Scored Predictions CSV",
+                        data=result_csv,
+                        file_name=f"scored_{uploaded_file.name.split('.')[0]}.csv",
+                        mime="text/csv",
+                        type="primary"
+                    )
+
+            except Exception as e:
+                st.error(f"❌ Error processing file: {str(e)}")
+                st.info("Tip: Click 'Download Sample Housing CSV' above to see the required column names and structure.")
+
+    # ==========================================
+    # TAB 2: SINGLE PREDICTOR
+    # ==========================================
+    with tab_single:
+        st.subheader("📝 Enter Individual Property Specifications")
         st.write("Adjust the 14 parameters below to estimate fair market value:")
 
         col1, col2, col3 = st.columns(3)
@@ -164,9 +315,9 @@ def main():
                 st.write(f"• **Basement & Guest:** {'Yes' if basement == 'Yes' or guestroom == 'Yes' else 'No'}")
 
     # ==========================================
-    # TAB 2: FACTORS & FEATURE IMPORTANCE
+    # TAB 3: FACTORS & FEATURE IMPORTANCE
     # ==========================================
-    with tab2:
+    with tab_factors:
         st.subheader("📊 Key Factors Determining House Prices")
         st.write("Machine learning reveals which property features carry the highest predictive weight in the market:")
 
@@ -198,9 +349,9 @@ def main():
             st.image("outputs/correlation_heatmap.png", caption="Correlation Matrix of Numerical Features with Price", use_container_width=True)
 
     # ==========================================
-    # TAB 3: DATASET EXPLORER
+    # TAB 4: DATASET EXPLORER
     # ==========================================
-    with tab3:
+    with tab_data:
         st.subheader("📋 Training Dataset (5,000 Properties)")
         if os.path.exists("data/housing_data.csv"):
             df = pd.read_csv("data/housing_data.csv")
@@ -241,9 +392,9 @@ def main():
             st.warning("Dataset not found. Run `python main.py` first.")
 
     # ==========================================
-    # TAB 4: MODEL LEADERBOARD
+    # TAB 5: MODEL LEADERBOARD
     # ==========================================
-    with tab4:
+    with tab_models:
         st.subheader("🏆 Model Comparison & Benchmarks")
         st.write("We trained and evaluated 6 different regression algorithms on identical 80/20 train-test splits:")
 
