@@ -27,11 +27,10 @@ env/
 .DS_Store
 Thumbs.db
 
-# Model files
-models/*.pkl
-models/*.joblib
-model/*.pkl
-model/*.joblib
+# Model files (Ignore large random forest to respect GitHub 100MB limit)
+models/*random_forest.pkl
+model/*random_forest.pkl
+*.joblib
 
 # Logs
 *.log
