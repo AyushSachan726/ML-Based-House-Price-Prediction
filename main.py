@@ -34,11 +34,11 @@ def main():
     print("=" * 60)
 
     # ----- Step 1: Generate Dataset -----
-    print("\n📁 Step 1: Generating Dataset...")
+    print("\n📁 Step 1: Generating Dataset (50,000 Records)...")
     os.makedirs("data", exist_ok=True)
-    df = generate_dataset(n_samples=5000)
+    df = generate_dataset(n_samples=50000)
     df.to_csv("data/housing_data.csv", index=False)
-    print(f"   Generated {df.shape[0]} samples with {df.shape[1]} features")
+    print(f"   Generated {df.shape[0]:,} samples with {df.shape[1]} features")
 
     # ----- Step 2: EDA Visualizations -----
     print("\n📊 Step 2: Creating EDA Visualizations...")

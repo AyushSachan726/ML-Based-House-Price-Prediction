@@ -30,13 +30,13 @@ class ModelTrainer:
             "Ridge Regression": Ridge(alpha=1.0),
             "Lasso Regression": Lasso(alpha=1.0),
             "Random Forest": RandomForestRegressor(
-                n_estimators=100, random_state=42, n_jobs=-1
+                n_estimators=100, max_depth=16, random_state=42, n_jobs=-1
             ),
             "Gradient Boosting": GradientBoostingRegressor(
-                n_estimators=100, random_state=42
+                n_estimators=100, max_depth=5, random_state=42
             ),
             "XGBoost": XGBRegressor(
-                n_estimators=100, random_state=42, n_jobs=-1,
+                n_estimators=100, max_depth=6, random_state=42, n_jobs=-1,
                 verbosity=0
             ),
         }

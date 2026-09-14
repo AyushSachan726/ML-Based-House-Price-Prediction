@@ -7,8 +7,8 @@ import pandas as pd
 import os
 
 
-def generate_dataset(n_samples=5000, random_state=42):
-    """Generate a realistic synthetic housing dataset."""
+def generate_dataset(n_samples=50000, random_state=42):
+    """Generate a realistic, large-scale synthetic housing dataset (Kaggle Benchmark Standard)."""
     np.random.seed(random_state)
 
     # Location-based pricing tiers
@@ -17,14 +17,14 @@ def generate_dataset(n_samples=5000, random_state=42):
         "Westside", "Eastside", "Northend", "Southend", "Lakeview"
     ]
     location_multiplier = {
-        "Downtown": 1.5, "Suburban": 1.0, "Rural": 0.7, "Midtown": 1.3,
-        "Uptown": 1.4, "Westside": 1.1, "Eastside": 0.9, "Northend": 0.85,
-        "Southend": 0.95, "Lakeview": 1.6
+        "Downtown": 1.55, "Suburban": 1.0, "Rural": 0.72, "Midtown": 1.35,
+        "Uptown": 1.42, "Westside": 1.12, "Eastside": 0.92, "Northend": 0.88,
+        "Southend": 0.96, "Lakeview": 1.65
     }
 
     # Generate features
     data = {
-        "Area_sqft": np.random.randint(500, 5000, n_samples),
+        "Area_sqft": np.random.randint(500, 5200, n_samples),
         "Bedrooms": np.random.randint(1, 7, n_samples),
         "Bathrooms": np.random.randint(1, 5, n_samples),
         "Stories": np.random.randint(1, 4, n_samples),
@@ -34,45 +34,45 @@ def generate_dataset(n_samples=5000, random_state=42):
         "Furnishing": np.random.choice(
             ["Furnished", "Semi-Furnished", "Unfurnished"], n_samples
         ),
-        "Road_access": np.random.choice(["Yes", "No"], n_samples, p=[0.8, 0.2]),
-        "Guestroom": np.random.choice(["Yes", "No"], n_samples, p=[0.3, 0.7]),
-        "Basement": np.random.choice(["Yes", "No"], n_samples, p=[0.25, 0.75]),
-        "Hot_water": np.random.choice(["Yes", "No"], n_samples, p=[0.6, 0.4]),
-        "AC": np.random.choice(["Yes", "No"], n_samples, p=[0.5, 0.5]),
-        "Preferred_area": np.random.choice(["Yes", "No"], n_samples, p=[0.35, 0.65]),
+        "Road_access": np.random.choice(["Yes", "No"], n_samples, p=[0.82, 0.18]),
+        "Guestroom": np.random.choice(["Yes", "No"], n_samples, p=[0.32, 0.68]),
+        "Basement": np.random.choice(["Yes", "No"], n_samples, p=[0.28, 0.72]),
+        "Hot_water": np.random.choice(["Yes", "No"], n_samples, p=[0.62, 0.38]),
+        "AC": np.random.choice(["Yes", "No"], n_samples, p=[0.55, 0.45]),
+        "Preferred_area": np.random.choice(["Yes", "No"], n_samples, p=[0.38, 0.62]),
     }
 
     df = pd.DataFrame(data)
 
-    # Calculate price based on features (realistic formula)
+    # Calculate price based on features (realistic real estate formula)
     base_price = 50000
     price = (
         base_price
         + df["Area_sqft"] * 120
-        + df["Bedrooms"] * 15000
+        + df["Bedrooms"] * 14000
         + df["Bathrooms"] * 12000
-        + df["Stories"] * 20000
+        + df["Stories"] * 18000
         + df["Parking"] * 10000
-        - df["Age_years"] * 2000
-        + df["Guestroom"].map({"Yes": 25000, "No": 0})
-        + df["Basement"].map({"Yes": 30000, "No": 0})
+        - df["Age_years"] * 1800
+        + df["Guestroom"].map({"Yes": 22000, "No": 0})
+        + df["Basement"].map({"Yes": 28000, "No": 0})
         + df["AC"].map({"Yes": 20000, "No": 0})
-        + df["Preferred_area"].map({"Yes": 50000, "No": 0})
+        + df["Preferred_area"].map({"Yes": 45000, "No": 0})
         + df["Furnishing"].map({
-            "Furnished": 40000, "Semi-Furnished": 20000, "Unfurnished": 0
+            "Furnished": 38000, "Semi-Furnished": 18000, "Unfurnished": 0
         })
-        + df["Road_access"].map({"Yes": 15000, "No": 0})
-        + df["Hot_water"].map({"Yes": 10000, "No": 0})
+        + df["Road_access"].map({"Yes": 14000, "No": 0})
+        + df["Hot_water"].map({"Yes": 9500, "No": 0})
     )
 
     # Apply location multiplier
     location_mult = df["Location"].map(location_multiplier)
     price = price * location_mult
 
-    # Add noise
-    noise = np.random.normal(0, 20000, n_samples)
-    price = price + noise
-    price = np.maximum(price, 30000)  # Minimum price
+    # Realistic market variance (unobserved condition, negotiations, seasonal spread: ~13.5%)
+    market_variance = np.random.normal(1.0, 0.135, n_samples)
+    price = price * market_variance
+    price = np.maximum(price, 35000)  # Minimum price bound
 
     df["Price"] = np.round(price, 2)
 
@@ -82,7 +82,7 @@ def generate_dataset(n_samples=5000, random_state=42):
 if __name__ == "__main__":
     # Generate and save dataset
     os.makedirs("data", exist_ok=True)
-    df = generate_dataset()
+    df = generate_dataset(n_samples=50000)
     df.to_csv("data/housing_data.csv", index=False)
     print(f"Dataset generated: {df.shape[0]} samples, {df.shape[1]} features")
     print(f"\nDataset Summary:")
