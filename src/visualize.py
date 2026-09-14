@@ -39,7 +39,7 @@ def plot_price_distribution(df, save_path="outputs/price_distribution.png"):
     plt.tight_layout()
     plt.savefig(save_path, dpi=150, bbox_inches="tight")
     plt.close()
-    print(f"📊 Saved: {save_path}")
+    print(f"[Saved] {save_path}")
 
 
 def plot_correlation_heatmap(df, save_path="outputs/correlation_heatmap.png"):
@@ -59,7 +59,7 @@ def plot_correlation_heatmap(df, save_path="outputs/correlation_heatmap.png"):
     plt.tight_layout()
     plt.savefig(save_path, dpi=150, bbox_inches="tight")
     plt.close()
-    print(f"📊 Saved: {save_path}")
+    print(f"[Saved] {save_path}")
 
 
 def plot_feature_vs_price(df, features, save_path="outputs/feature_vs_price.png"):
@@ -88,7 +88,7 @@ def plot_feature_vs_price(df, features, save_path="outputs/feature_vs_price.png"
     plt.tight_layout()
     plt.savefig(save_path, dpi=150, bbox_inches="tight")
     plt.close()
-    print(f"📊 Saved: {save_path}")
+    print(f"[Saved] {save_path}")
 
 
 def plot_model_comparison(results, save_path="outputs/model_comparison.png"):
@@ -102,11 +102,11 @@ def plot_model_comparison(results, save_path="outputs/model_comparison.png"):
 
     fig, axes = plt.subplots(1, 2, figsize=(16, 6))
 
-    # R² Score comparison
+    # R2 Score comparison
     colors = sns.color_palette("husl", len(model_names))
     bars1 = axes[0].barh(model_names, r2_scores, color=colors, edgecolor="black")
-    axes[0].set_xlabel("R² Score", fontsize=12)
-    axes[0].set_title("Model Comparison - R² Score", fontsize=14, fontweight="bold")
+    axes[0].set_xlabel("R2 Score", fontsize=12)
+    axes[0].set_title("Model Comparison - R2 Score", fontsize=14, fontweight="bold")
     for bar, score in zip(bars1, r2_scores):
         axes[0].text(bar.get_width() + 0.005, bar.get_y() + bar.get_height() / 2,
                      f"{score:.4f}", va="center", fontweight="bold")
@@ -122,7 +122,7 @@ def plot_model_comparison(results, save_path="outputs/model_comparison.png"):
     plt.tight_layout()
     plt.savefig(save_path, dpi=150, bbox_inches="tight")
     plt.close()
-    print(f"📊 Saved: {save_path}")
+    print(f"[Saved] {save_path}")
 
 
 def plot_actual_vs_predicted(y_actual, y_predicted, model_name,
@@ -157,7 +157,7 @@ def plot_actual_vs_predicted(y_actual, y_predicted, model_name,
     plt.tight_layout()
     plt.savefig(save_path, dpi=150, bbox_inches="tight")
     plt.close()
-    print(f"📊 Saved: {save_path}")
+    print(f"[Saved] {save_path}")
 
 
 def plot_feature_importance(model, feature_names, model_name,
@@ -167,7 +167,7 @@ def plot_feature_importance(model, feature_names, model_name,
     set_style()
 
     if not hasattr(model, "feature_importances_"):
-        print(f"⚠️  {model_name} does not support feature importance")
+        print(f"[Notice] {model_name} does not support feature importance")
         return
 
     importances = model.feature_importances_
@@ -187,4 +187,4 @@ def plot_feature_importance(model, feature_names, model_name,
     plt.tight_layout()
     plt.savefig(save_path, dpi=150, bbox_inches="tight")
     plt.close()
-    print(f"📊 Saved: {save_path}")
+    print(f"[Saved] {save_path}")

@@ -6,11 +6,11 @@ Trains and compares multiple regression models.
 import numpy as np
 from sklearn.linear_model import LinearRegression, Ridge, Lasso
 from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor
-from sklearn.svm import SVR
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 from xgboost import XGBRegressor
 import joblib
 import os
+import shutil
 import time
 
 
@@ -60,13 +60,13 @@ class ModelTrainer:
 
     def train_and_evaluate(self, X_train, X_test, y_train, y_test):
         """Train all models and evaluate their performance."""
-        print("\n🤖 Starting Model Training...")
+        print("\nStarting Model Training...")
         print("=" * 70)
 
         models = self.get_models()
 
         for name, model in models.items():
-            print(f"\n📌 Training: {name}")
+            print(f"\nTraining: {name}")
             start_time = time.time()
 
             # Train
@@ -84,7 +84,7 @@ class ModelTrainer:
             self.models[name] = model
             self.results[name] = metrics
 
-            print(f"   R² Score: {metrics['R2_Score']:.4f} | "
+            print(f"   R2 Score: {metrics['R2_Score']:.4f} | "
                   f"RMSE: ${metrics['RMSE']:,.2f} | "
                   f"MAE: ${metrics['MAE']:,.2f} | "
                   f"Time: {training_time}s")
@@ -96,7 +96,7 @@ class ModelTrainer:
         return self.results
 
     def _find_best_model(self):
-        """Find the best model based on R² Score."""
+        """Find the best model based on R2 Score."""
         best_score = -float("inf")
         for name, metrics in self.results.items():
             if metrics["R2_Score"] > best_score:
@@ -104,24 +104,24 @@ class ModelTrainer:
                 self.best_model_name = name
                 self.best_model = self.models[name]
 
-        print(f"\n🏆 Best Model: {self.best_model_name} "
-              f"(R² = {best_score:.4f})")
+        print(f"\n[Champion] Best Model: {self.best_model_name} "
+              f"(R2 = {best_score:.4f})")
 
     def _print_comparison(self):
         """Print model comparison table."""
-        print("\n📊 MODEL COMPARISON TABLE")
+        print("\nMODEL COMPARISON TABLE")
         print("-" * 90)
-        header = f"{'Model':<25} {'R² Score':<12} {'RMSE ($)':<15} {'MAE ($)':<15} {'MAPE (%)':<12} {'Time (s)':<10}"
+        header = f"{'Model':<25} {'R2 Score':<12} {'RMSE ($)':<15} {'MAE ($)':<15} {'MAPE (%)':<12} {'Time (s)':<10}"
         print(header)
         print("-" * 90)
 
-        # Sort by R² Score
+        # Sort by R2 Score
         sorted_results = sorted(
             self.results.items(), key=lambda x: x[1]["R2_Score"], reverse=True
         )
 
         for name, metrics in sorted_results:
-            marker = " 🏆" if name == self.best_model_name else ""
+            marker = " [Best]" if name == self.best_model_name else ""
             row = (
                 f"{name:<25} {metrics['R2_Score']:<12.4f} "
                 f"{metrics['RMSE']:<15,.2f} {metrics['MAE']:<15,.2f} "
@@ -133,29 +133,34 @@ class ModelTrainer:
         print("-" * 90)
 
     def save_best_model(self, filepath="models/best_model.pkl"):
-        """Save the best performing model."""
-        os.makedirs(os.path.dirname(filepath), exist_ok=True)
+        """Save the best performing model to both models/ and model/."""
+        os.makedirs("models", exist_ok=True)
+        os.makedirs("model", exist_ok=True)
         model_data = {
             "model": self.best_model,
             "model_name": self.best_model_name,
             "metrics": self.results[self.best_model_name],
         }
         joblib.dump(model_data, filepath)
-        print(f"\n💾 Best model ({self.best_model_name}) saved to: {filepath}")
+        joblib.dump(model_data, os.path.join("model", os.path.basename(filepath)))
+        print(f"\nBest model ({self.best_model_name}) saved to: {filepath} and model/{os.path.basename(filepath)}")
 
     def save_all_models(self, directory="models/"):
-        """Save all trained models."""
-        os.makedirs(directory, exist_ok=True)
+        """Save all trained models to both models/ and model/."""
+        os.makedirs("models", exist_ok=True)
+        os.makedirs("model", exist_ok=True)
         for name, model in self.models.items():
             filename = name.lower().replace(" ", "_") + ".pkl"
-            filepath = os.path.join(directory, filename)
-            joblib.dump(model, filepath)
-        print(f"💾 All {len(self.models)} models saved to: {directory}")
+            joblib.dump(model, os.path.join("models", filename))
+            joblib.dump(model, os.path.join("model", filename))
+        print(f"All {len(self.models)} models saved to models/ and model/")
 
     @staticmethod
     def load_model(filepath="models/best_model.pkl"):
-        """Load a saved model."""
+        """Load a saved model with fallback to model/."""
+        if not os.path.exists(filepath) and os.path.exists("model/" + os.path.basename(filepath)):
+            filepath = "model/" + os.path.basename(filepath)
         model_data = joblib.load(filepath)
-        print(f"✅ Model loaded: {model_data['model_name']}")
-        print(f"   R² Score: {model_data['metrics']['R2_Score']}")
+        print(f"[OK] Model loaded: {model_data['model_name']}")
+        print(f"   R2 Score: {model_data['metrics']['R2_Score']}")
         return model_data

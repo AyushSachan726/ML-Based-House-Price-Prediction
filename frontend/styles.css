@@ -1,0 +1,171 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+
+html, body, [class*="css"] {
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: #EDEFF2;
+}
+
+/* Main container clean padding */
+.block-container {
+    padding-top: 2rem !important;
+    padding-bottom: 3rem !important;
+    max-width: 1280px !important;
+}
+
+/* Solid Flat Architectural Yellow Header Card - No Gradient, No Glow */
+.hero-banner {
+    background-color: #F6C844;
+    border-radius: 14px;
+    padding: 30px 34px;
+    color: #111827;
+    margin-bottom: 22px;
+    border: 1px solid #E6B830;
+}
+.hero-title {
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    margin: 0 0 6px 0;
+    color: #111827;
+}
+.hero-subtitle {
+    font-size: 0.92rem;
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: 18px;
+    max-width: 640px;
+    line-height: 1.5;
+}
+.hero-stats-row {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+}
+.hero-pill {
+    background: #FFFFFF;
+    padding: 6px 14px;
+    border-radius: 6px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: #111827;
+    border: 1px solid #E5E7EB;
+}
+
+/* Flat Matte White Metric Cards - No Shadow, No Glow */
+.stat-card {
+    background: #FFFFFF;
+    border: 1px solid #E5E7EB;
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin-bottom: 14px;
+}
+.stat-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: #6B7280;
+    margin-bottom: 6px;
+}
+.stat-value {
+    font-size: 1.65rem;
+    font-weight: 700;
+    color: #111827;
+    line-height: 1.15;
+    margin-bottom: 8px;
+    letter-spacing: -0.02em;
+}
+.stat-badge-positive {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    background: #F3F4F6;
+    color: #1F2937;
+    border: 1px solid #E5E7EB;
+}
+.stat-badge-neutral {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    background: #F3F4F6;
+    color: #4B5563;
+    border: 1px solid #E5E7EB;
+}
+
+/* Clean Matte Section Headers */
+.section-header {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #111827;
+    letter-spacing: -0.01em;
+    margin: 20px 0 6px 0;
+}
+.section-desc {
+    font-size: 0.85rem;
+    color: #6B7280;
+    margin-bottom: 16px;
+}
+
+/* Flat Tab Navigation */
+div[data-baseweb="tab-list"] {
+    gap: 6px;
+    border-bottom: 1px solid #E5E7EB;
+    padding-bottom: 4px;
+    margin-bottom: 20px;
+}
+div[data-baseweb="tab"] {
+    padding: 8px 16px !important;
+    font-weight: 600 !important;
+    font-size: 0.85rem !important;
+    border-radius: 6px !important;
+    color: #6B7280 !important;
+    background: transparent !important;
+    border: none !important;
+}
+div[data-baseweb="tab"][aria-selected="true"] {
+    color: #111827 !important;
+    background: #FFFFFF !important;
+    border: 1px solid #E5E7EB !important;
+}
+
+/* Matte Solid Buttons - No Glow */
+div.stButton > button[kind="primary"] {
+    background-color: #111827 !important;
+    color: #FFFFFF !important;
+    border-radius: 8px !important;
+    padding: 10px 22px !important;
+    font-weight: 600 !important;
+    font-size: 0.9rem !important;
+    border: 1px solid #111827 !important;
+    box-shadow: none !important;
+}
+div.stButton > button[kind="primary"]:hover {
+    background-color: #1F2937 !important;
+}
+
+/* Clean Secondary Buttons */
+div.stButton > button[kind="secondary"], div.stDownloadButton > button {
+    background-color: #FFFFFF !important;
+    color: #111827 !important;
+    border-radius: 8px !important;
+    padding: 8px 18px !important;
+    font-weight: 600 !important;
+    font-size: 0.85rem !important;
+    border: 1px solid #D1D5DB !important;
+    box-shadow: none !important;
+}
+div.stButton > button[kind="secondary"]:hover, div.stDownloadButton > button:hover {
+    background-color: #F9FAFB !important;
+    border-color: #9CA3AF !important;
+}
+
+/* Clean Tables & Dataframes */
+[data-testid="stDataFrame"] {
+    border: 1px solid #E5E7EB;
+    border-radius: 8px;
+    background: #FFFFFF;
+}

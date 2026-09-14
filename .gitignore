@@ -30,6 +30,8 @@ Thumbs.db
 # Model files
 models/*.pkl
 models/*.joblib
+model/*.pkl
+model/*.joblib
 
 # Logs
 *.log

@@ -9,6 +9,7 @@ from sklearn.preprocessing import LabelEncoder, StandardScaler
 from sklearn.model_selection import train_test_split
 import joblib
 import os
+import shutil
 
 
 class DataPreprocessor:
@@ -23,13 +24,13 @@ class DataPreprocessor:
     def load_data(self, filepath):
         """Load dataset from CSV file."""
         df = pd.read_csv(filepath)
-        print(f"✅ Dataset loaded: {df.shape[0]} rows, {df.shape[1]} columns")
+        print(f"[OK] Dataset loaded: {df.shape[0]} rows, {df.shape[1]} columns")
         return df
 
     def explore_data(self, df):
         """Print basic dataset information."""
         print("\n" + "=" * 60)
-        print("📊 DATASET OVERVIEW")
+        print("DATASET OVERVIEW")
         print("=" * 60)
         print(f"\nShape: {df.shape}")
         print(f"\nData Types:\n{df.dtypes}")
@@ -51,7 +52,7 @@ class DataPreprocessor:
                 df[col].fillna(df[col].mode()[0], inplace=True)
                 print(f"  Filled {col} with mode: {df[col].mode()[0]}")
 
-        print("✅ Missing values handled")
+        print("[OK] Missing values handled")
         return df
 
     def encode_features(self, df, target_column="Price"):
@@ -71,7 +72,7 @@ class DataPreprocessor:
             df[col] = le.fit_transform(df[col])
             self.label_encoders[col] = le
 
-        print(f"✅ Encoded {len(self.categorical_columns)} categorical columns: "
+        print(f"[OK] Encoded {len(self.categorical_columns)} categorical columns: "
               f"{self.categorical_columns}")
         return df
 
@@ -79,7 +80,7 @@ class DataPreprocessor:
         """Scale numerical features using StandardScaler."""
         X_train_scaled = self.scaler.fit_transform(X_train)
         X_test_scaled = self.scaler.transform(X_test)
-        print("✅ Features scaled using StandardScaler")
+        print("[OK] Features scaled using StandardScaler")
         return X_train_scaled, X_test_scaled
 
     def split_data(self, df, target_column="Price", test_size=0.2, random_state=42):
@@ -91,12 +92,14 @@ class DataPreprocessor:
             X, y, test_size=test_size, random_state=random_state
         )
 
-        print(f"✅ Data split: Train={X_train.shape[0]}, Test={X_test.shape[0]}")
+        print(f"[OK] Data split: Train={X_train.shape[0]}, Test={X_test.shape[0]}")
         return X_train, X_test, y_train, y_test
 
     def save_preprocessor(self, filepath="models/preprocessor.pkl"):
-        """Save preprocessing objects."""
+        """Save preprocessing objects to both models/ and model/."""
         os.makedirs(os.path.dirname(filepath), exist_ok=True)
+        os.makedirs("model", exist_ok=True)
+        os.makedirs("models", exist_ok=True)
         preprocessor_data = {
             "label_encoders": self.label_encoders,
             "scaler": self.scaler,
@@ -104,20 +107,25 @@ class DataPreprocessor:
             "numerical_columns": self.numerical_columns,
         }
         joblib.dump(preprocessor_data, filepath)
-        print(f"✅ Preprocessor saved to: {filepath}")
+        # Also copy to model/
+        model_copy_path = os.path.join("model", os.path.basename(filepath))
+        joblib.dump(preprocessor_data, model_copy_path)
+        print(f"[OK] Preprocessor saved to: {filepath} and {model_copy_path}")
 
     def load_preprocessor(self, filepath="models/preprocessor.pkl"):
-        """Load preprocessing objects."""
+        """Load preprocessing objects with fallback to model/."""
+        if not os.path.exists(filepath) and os.path.exists("model/" + os.path.basename(filepath)):
+            filepath = "model/" + os.path.basename(filepath)
         preprocessor_data = joblib.load(filepath)
         self.label_encoders = preprocessor_data["label_encoders"]
         self.scaler = preprocessor_data["scaler"]
         self.categorical_columns = preprocessor_data["categorical_columns"]
         self.numerical_columns = preprocessor_data["numerical_columns"]
-        print(f"✅ Preprocessor loaded from: {filepath}")
+        print(f"[OK] Preprocessor loaded from: {filepath}")
 
     def preprocess_pipeline(self, filepath, target_column="Price"):
         """Complete preprocessing pipeline."""
-        print("\n🔧 Starting Data Preprocessing Pipeline...")
+        print("\n[Start] Data Preprocessing Pipeline...")
         print("-" * 50)
 
         # Load data
@@ -142,6 +150,6 @@ class DataPreprocessor:
         self.save_preprocessor()
 
         print("-" * 50)
-        print("🎉 Preprocessing Complete!\n")
+        print("[Complete] Preprocessing Finished!\n")
 
         return X_train_scaled, X_test_scaled, y_train, y_test, X_train.columns.tolist()

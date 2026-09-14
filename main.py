@@ -1,10 +1,11 @@
 """
 Main Pipeline Script for ML-Based House Price Prediction.
-Runs the complete pipeline: data generation → preprocessing → training → evaluation.
+Runs the complete pipeline: data generation -> preprocessing -> training -> evaluation.
 """
 
 import os
 import sys
+import shutil
 import numpy as np
 
 # Configure UTF-8 for Windows console
@@ -30,18 +31,18 @@ from src.visualize import (
 
 def main():
     """Run the complete ML pipeline."""
-    print("🏠 ML-Based House Price Prediction Pipeline")
+    print("ML-Based House Price Prediction Pipeline")
     print("=" * 60)
 
     # ----- Step 1: Generate Dataset -----
-    print("\n📁 Step 1: Generating Dataset (50,000 Records)...")
+    print("\n[Step 1] Generating Dataset (50,000 Records)...")
     os.makedirs("data", exist_ok=True)
     df = generate_dataset(n_samples=50000)
     df.to_csv("data/housing_data.csv", index=False)
     print(f"   Generated {df.shape[0]:,} samples with {df.shape[1]} features")
 
     # ----- Step 2: EDA Visualizations -----
-    print("\n📊 Step 2: Creating EDA Visualizations...")
+    print("\n[Step 2] Creating EDA Visualizations...")
     os.makedirs("outputs", exist_ok=True)
     plot_price_distribution(df)
     plot_correlation_heatmap(df)
@@ -51,25 +52,30 @@ def main():
     plot_feature_vs_price(df, numerical_features)
 
     # ----- Step 3: Data Preprocessing -----
-    print("\n🔧 Step 3: Data Preprocessing...")
+    print("\n[Step 3] Data Preprocessing...")
     preprocessor = DataPreprocessor()
     X_train, X_test, y_train, y_test, feature_names = preprocessor.preprocess_pipeline(
         "data/housing_data.csv"
     )
 
     # ----- Step 4: Model Training & Evaluation -----
-    print("\n🤖 Step 4: Training Models...")
+    print("\n[Step 4] Training Models...")
     trainer = ModelTrainer()
     results = trainer.train_and_evaluate(X_train, X_test, y_train, y_test)
 
     # ----- Step 5: Save Models -----
-    print("\n💾 Step 5: Saving Models...")
+    print("\n[Step 5] Saving Models...")
     os.makedirs("models", exist_ok=True)
+    os.makedirs("model", exist_ok=True)
     trainer.save_best_model()
     trainer.save_all_models()
 
+    # Sync to model/ folder as well for compatibility
+    for f in os.listdir("models"):
+        shutil.copy(os.path.join("models", f), os.path.join("model", f))
+
     # ----- Step 6: Generate Evaluation Plots -----
-    print("\n📈 Step 6: Generating Evaluation Plots...")
+    print("\n[Step 6] Generating Evaluation Plots...")
     plot_model_comparison(results)
 
     # Actual vs Predicted for best model
@@ -83,14 +89,14 @@ def main():
 
     # ----- Summary -----
     print("\n" + "=" * 60)
-    print("🎉 PIPELINE COMPLETE!")
+    print("PIPELINE COMPLETE!")
     print("=" * 60)
-    print(f"\n📁 Dataset:       data/housing_data.csv")
-    print(f"🤖 Best Model:    {trainer.best_model_name}")
-    print(f"📊 R² Score:      {results[trainer.best_model_name]['R2_Score']:.4f}")
-    print(f"💰 RMSE:          ${results[trainer.best_model_name]['RMSE']:,.2f}")
-    print(f"📈 Visualizations: outputs/")
-    print(f"💾 Models:         models/")
+    print(f"\nDataset:        data/housing_data.csv")
+    print(f"Best Model:     {trainer.best_model_name}")
+    print(f"R2 Score:       {results[trainer.best_model_name]['R2_Score']:.4f}")
+    print(f"RMSE:           ${results[trainer.best_model_name]['RMSE']:,.2f}")
+    print(f"Visualizations: outputs/")
+    print(f"Models:         model/ & models/")
     print("=" * 60)
 
 
