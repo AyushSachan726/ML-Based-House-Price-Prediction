@@ -4,10 +4,19 @@
 [![Scikit-Learn](https://img.shields.io/badge/Scikit--Learn-1.4%2B-F7931E?style=for-the-badge&logo=scikit-learn&logoColor=white)](https://scikit-learn.org/)
 [![XGBoost](https://img.shields.io/badge/XGBoost-2.0%2B-EB5424?style=for-the-badge&logo=xgboost&logoColor=white)](https://xgboost.readthedocs.io/)
 [![Streamlit](https://img.shields.io/badge/Streamlit-1.31%2B-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)](https://streamlit.io/)
+[![Live Demo](https://img.shields.io/badge/Live_Demo-Streamlit_Cloud-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)](https://ml-based-house-price-prediction-5yjwjpcikhk7qfx42yqrej.streamlit.app/)
 [![Dataset](https://img.shields.io/badge/Dataset-50%2C000%20Verified%20Records-blue?style=for-the-badge)](#dataset-overview)
 [![R2 Score](https://img.shields.io/badge/Champion%20R2-88.31%25-brightgreen?style=for-the-badge)](#model-benchmarks--leaderboard)
 
 An end-to-end Machine Learning pipeline and architectural appraisal system engineered to estimate residential real estate market values. Calibrated on 50,000+ verified transaction records across 10 location tiers and 14 structural/amenity dimensions, featuring an interactive Streamlit dashboard for real-time appraisal and batch valuation.
+
+---
+
+## Live Web Application
+The system is deployed and publicly accessible online:
+- **Direct Link:** [https://ml-based-house-price-prediction-5yjwjpcikhk7qfx42yqrej.streamlit.app/](https://ml-based-house-price-prediction-5yjwjpcikhk7qfx42yqrej.streamlit.app/)
+- **Hosting Platform:** Streamlit Community Cloud
+- **Deployment Status:** Active & Operational
 
 ---
 
