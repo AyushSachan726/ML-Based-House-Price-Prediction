@@ -16,6 +16,17 @@ if sys.platform == "win32" and hasattr(sys.stdout, "reconfigure"):
 # Add project root to path
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
+# Auto-redirect to app.py if executed as a Streamlit app (e.g. on Streamlit Cloud)
+try:
+    import streamlit as st
+    if st.runtime.exists():
+        import runpy
+        app_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "app.py")
+        runpy.run_path(app_path, run_name="__main__")
+        sys.exit(0)
+except Exception:
+    pass
+
 from src.generate_dataset import generate_dataset
 from src.data_preprocessing import DataPreprocessor
 from src.model_training import ModelTrainer

@@ -23,7 +23,10 @@ class DataPreprocessor:
 
     def load_data(self, filepath):
         """Load dataset from CSV file."""
-        df = pd.read_csv(filepath)
+        try:
+            df = pd.read_csv(filepath)
+        except Exception:
+            df = pd.read_csv(filepath, on_bad_lines="skip", engine="python")
         print(f"[OK] Dataset loaded: {df.shape[0]} rows, {df.shape[1]} columns")
         return df
 
